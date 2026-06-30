@@ -5,6 +5,8 @@
 // gestão de ativos (computadores) e gestão de licenças de software.
 // Ele atua como o ponto central de comunicação entre o frontend e o banco de dados.
 // ========================================================
+require('dotenv').config();
+
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -15,10 +17,10 @@ app.use(express.json());
 
 // Configuração de acesso ao Banco de Dados (MySQL)
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root', 
-    password: '123456', 
-    database: 'root'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
 });
 
 // Tenta conectar ao banco e avisa no console do Node.js se deu certo ou errado
@@ -229,5 +231,5 @@ app.put('/api/licencas/:id/cancelar', (req, res) => {
     );
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
