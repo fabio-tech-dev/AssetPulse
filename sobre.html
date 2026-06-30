@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetPulse - Sobre os Recursos</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .recurso-bloco {
+            background: #151125;
+            border: 1px solid #2b2245;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* Intercala a ordem da imagem e do texto */
+        .recurso-bloco:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .recurso-icone-grande {
+            font-size: 80px;
+            background: #0b0914;
+            padding: 30px;
+            border-radius: 50%;
+            border: 2px solid #4c1d95;
+            box-shadow: 0 0 30px rgba(126, 34, 206, 0.2);
+            flex-shrink: 0;
+        }
+
+        .recurso-texto h2 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #4c1d95;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .recurso-texto p {
+            color: #c4b5fd;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .recurso-texto ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .recurso-texto ul li {
+            color: #e5e7eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recurso-texto ul li::before {
+            content: '✓';
+            color: #00e676;
+        }
+
+        @media (max-width: 768px) {
+            .recurso-bloco, .recurso-bloco:nth-child(even) {
+                flex-direction: column;
+                text-align: center;
+                padding: 25px;
+            }
+            .recurso-texto ul li {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <header class="cabecalho">
+            <div class="logo-area" onclick="window.location.href='index.html'" style="cursor: pointer;" title="Voltar ao Início">
+                <svg width="40" height="40" viewBox="0 0 100 100" class="logo-svg" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradSobre" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#662d91;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="48" fill="none" stroke="url(#logoGradSobre)" stroke-width="4"/>
+                    <path d="M50 15C36.2 15 25 26.2 25 40C25 55 50 85 50 85C50 85 75 55 75 40C75 26.2 63.8 15 50 15ZM42 55V35H48V55H42ZM52 55V28H58V55H52Z" fill="url(#logoGradSobre)"/>
+                </svg>
+                <div class="titulo-area">
+                    <h1>AssetPulse</h1>
+                    <span class="subtitulo">Conheça a Tecnologia</span>
+                </div>
+            </div>
+            <a href="index.html" class="btn-voltar">&#8592; Voltar ao Painel</a>
+        </header>
+
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h1 style="color: #ffffff; font-size: 36px; margin-bottom: 10px;">Como o AssetPulse transforma sua Gestão em TI</h1>
+            <p style="color: #a78bfa; font-size: 18px; max-width: 800px; margin: 0 auto;">Descubra a engenharia por trás do nosso sistema de gerenciamento de hardware e software.</p>
+        </div>
+
+        <div id="nuvem" class="recurso-bloco">
+            <div class="recurso-icone-grande">☁️</div>
+            <div class="recurso-texto">
+                <h2>Nuvem e Backups</h2>
+                <p>O AssetPulse foi construído com arquitetura distribuída. Isso significa que você não depende de servidores físicos locais que podem falhar ou queimar. Toda a base de dados do seu inventário é sincronizada em nuvem em tempo real.</p>
+                <ul>
+                    <li>Bancos de dados MySQL otimizados para alta disponibilidade.</li>
+                    <li>Rotinas de backup automatizadas contra perda de dados.</li>
+                    <li>Acesso remoto: gerencie seu parque de máquinas de qualquer lugar do mundo.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="seguranca" class="recurso-bloco">
+            <div class="recurso-icone-grande">🔒</div>
+            <div class="recurso-texto">
+                <h2>Segurança Avançada</h2>
+                <p>O roubo de informações e o sequestro de dados (Ransomware) são os maiores medos de uma infraestrutura. Nós lidamos com chaves de licença caras e dados sensíveis de equipamentos, por isso nossa segurança é de nível bancário.</p>
+                <ul>
+                    <li>Criptografia de ponta a ponta na transmissão de dados.</li>
+                    <li>Sistema de Login com senhas ocultas e tokens seguros.</li>
+                    <li>Bloqueio de injeções SQL e proteção contra ataques de força bruta.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="alertas" class="recurso-bloco">
+            <div class="recurso-icone-grande">🔄</div>
+            <div class="recurso-texto">
+                <h2>Alertas Inteligentes</h2>
+                <p>Esquecer a data de renovação de um software crítico (como um Antivírus ou ERP) pode parar uma empresa inteira. O AssetPulse calcula diariamente a validade de todas as chaves cadastradas.</p>
+                <ul>
+                    <li>Identificação visual automática: bolinhas mudam de cor baseado no status.</li>
+                    <li>Cards de KPI no painel inicial avisam imediatamente sobre licenças expirando.</li>
+                    <li>Contagem regressiva de dias restantes calculada pelo servidor.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="manutencao" class="recurso-bloco">
+            <div class="recurso-icone-grande">🛠️</div>
+            <div class="recurso-texto">
+                <h2>Gestão de Manutenção</h2>
+                <p>Não basta saber quantos computadores a empresa tem, é preciso saber a saúde deles. Nosso sistema permite isolar equipamentos que estão na bancada, facilitando a vida dos técnicos de campo e de laboratório.</p>
+                <ul>
+                    <li>Mude o status de um PC para "Em Manutenção" com 2 cliques.</li>
+                    <li>O painel geral recalcula a saúde do parque tecnológico automaticamente.</li>
+                    <li>Histórico limpo: descarte máquinas antigas sem perder o rastreio.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="api" class="recurso-bloco">
+            <div class="recurso-icone-grande">⚙️</div>
+            <div class="recurso-texto">
+                <h2>API Poderosa (Node.js)</h2>
+                <p>O coração do AssetPulse não é apenas visual, é o seu backend construído em Node.js com Express. Ele funciona como uma API RESTful completa, pronta para escalar conforme sua empresa cresce.</p>
+                <ul>
+                    <li>Rotas estruturadas (GET, POST, PUT, DELETE) para gerenciamento externo.</li>
+                    <li>Respostas rápidas em formato JSON.</li>
+                    <li>Fácil integração futura com ferramentas como PowerBI ou Active Directory.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="suporte" class="recurso-bloco">
+            <div class="recurso-icone-grande">🚀</div>
+            <div class="recurso-texto">
+                <h2>Exportação e Suporte</h2>
+                <p>Seus dados não ficam presos no nosso sistema. Prezamos pela transparência e agilidade na prestação de contas (Reports) para as diretorias e gerências.</p>
+                <ul>
+                    <li>Exportação instantânea de todo o inventário para planilhas CSV/Excel.</li>
+                    <li>Filtros inteligentes que organizam os dados antes da exportação.</li>
+                    <li>Design focado no usuário (UX) para que qualquer colaborador consiga operar sem treinamento complexo.</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="rodape-site">
+        <p>Copyright 2026 &copy; AssetPulse. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
