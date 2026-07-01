@@ -55,6 +55,7 @@ Abra o terminal do seu editor de código dentro da pasta raiz do projeto e execu
 ### 3️⃣ Configure as variáveis de ambiente
 Crie um arquivo chamado .env (exatamente com o ponto no início) na raiz do projeto e adicione as suas credenciais locais do seu banco de dados MySQL:
 
+```text```
 ```DB_HOST=localhost```
 ```DB_USER=seu_usuario_mysql```
 ```DB_PASS=sua_senha_mysql```
