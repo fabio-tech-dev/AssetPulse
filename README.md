@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.svg" alt="AssetPulse Logo" width="130" />
 
-  # 💜 AssetPulse
+  # 🟣 AssetPulse
 
   *Sistema SaaS Multi-Tenant para Gestão Inteligente de Inventário de TI*
 
