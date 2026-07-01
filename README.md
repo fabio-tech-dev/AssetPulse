@@ -1,57 +1,48 @@
-# AssetPulse 🚀
+<div align="center">
+  <img src="logo.svg" alt="AssetPulse Logo" width="130" />
 
-O **AssetPulse** é um sistema SaaS (Software as a Service) Multi-Tenant desenvolvido para a gestão inteligente de inventário e ativos de TI. O objetivo central é oferecer uma plataforma centralizada para controle de hardware, licenças de software e acompanhamento de vencimentos, otimizando o trabalho de gestores de tecnologia e suporte técnico.
+  # 💜 AssetPulse
+
+  *Sistema SaaS Multi-Tenant para Gestão Inteligente de Inventário de TI*
+
+  ![Node.js](https://img.shields.io/badge/Node.js-662d91?style=for-the-badge&logo=node.js&logoColor=white)
+  ![Express](https://img.shields.io/badge/Express.js-9b59b6?style=for-the-badge&logo=express&logoColor=white)
+  ![MySQL](https://img.shields.io/badge/MySQL-662d91?style=for-the-badge&logo=mysql&logoColor=white)
+  ![JavaScript](https://img.shields.io/badge/JavaScript-9b59b6?style=for-the-badge&logo=javascript&logoColor=white)
+</div>
+
+<br>
+
+## 📝 Sobre o Projeto
+
+O **AssetPulse** é uma solução robusta desenvolvida para resolver dores reais de gestão tecnológica. Ele funciona como uma plataforma centralizada para o controle total de hardwares, monitoramento rigoroso de licenças de software e acompanhamento automatizado de prazos de vencimento. 
+
+A arquitetura foi projetada seguindo o modelo **Multi-Tenant**, o que significa que o sistema é capaz de servir múltiplos clientes ou empresas de forma completamente isolada, garantindo total privacidade, integridade e segurança para os dados de cada usuário.
+
+---
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Front-end:** HTML5, CSS3, JavaScript (ES6+)
-* **Back-end:** Node.js, Express, Dotenv (Segurança de credenciais)
-* **Banco de Dados:** MySQL (Modelagem relacional e Consultas SQL)
-* **Arquitetura:** Multi-Tenant (Isolamento seguro de dados por cliente/usuário)
+* **Front-end:** HTML5, CSS3, JavaScript (ES6+) com foco em usabilidade e interface responsiva.
+* **Back-end:** Node.js e Express, estruturando uma API ágil e organizada.
+* **Segurança:** Dotenv para criptografia e isolamento de variáveis de ambiente.
+* **Banco de Dados:** MySQL, utilizando modelagem relacional avançada e consultas otimizadas.
+
+---
 
 ## 📌 Principais Funcionalidades
 
-* **Gestão de Ativos (Computadores):** Cadastro, edição, listagem e exclusão de hardwares com controle de status (Ativo, Manutenção, Descartado).
-* **Controle de Licenças:** Cadastro de chaves de softwares com cálculo automático de dias restantes para o vencimento (DATEDIFF) e funções de renovação ou cancelamento.
-* **Autenticação Segura:** Sistema de cadastro e login de usuários com validação direta no banco de dados.
-* **Segurança Prática:** Arquitetura configurada com variáveis de ambiente (`.env`) para total proteção das credenciais de acesso ao banco de dados.
+* 🖥️ **Gestão de Ativos (Computadores):** Controle completo (CRUD) de hardwares com monitoramento de status em tempo real (Ativo, Manutenção ou Descartado).
+* 🔑 **Controle de Licenças:** Cadastro de chaves de ativação com cálculo automático de dias restantes para o vencimento através da função `DATEDIFF` do SQL, permitindo ações rápidas de renovação ou cancelamento.
+* 🔐 **Autenticação Segura:** Sistema completo de cadastro e login de usuários com validação direta e segura no banco de dados.
+* 🛡️ **Proteção de Dados:** Código backend estruturado para nunca expor credenciais ou senhas de servidores, utilizando boas práticas de desenvolvimento seguro.
 
 ---
 
 ## ⚙️ Como executar este projeto
 
-Para rodar este projeto localmente no seu computador, siga os passos abaixo:
+Para rodar e testar esta aplicação localmente no seu ambiente de desenvolvimento, siga o passo a passo abaixo:
 
-1. **Clone o repositório:**
-   ```bash
-   git clone [https://github.com/fabio-tech-dev/AssetPulse.git](https://github.com/fabio-tech-dev/AssetPulse.git)
-Instale as dependências:
-Abra o terminal dentro da pasta raiz do projeto e execute o comando para instalar as bibliotecas necessárias:
-
-Bash
-npm install
-Configure as variáveis de ambiente:
-Crie um arquivo chamado .env (exatamente com o ponto no início) na raiz do projeto e configure as suas credenciais locais do MySQL:
-
-Plaintext
-DB_HOST=localhost
-DB_USER=seu_usuario_mysql
-DB_PASS=sua_senha_mysql
-DB_NAME=gestordeinventario
-PORT=3000
-Configure o Banco de Dados:
-
-Abra o seu gerenciador MySQL (como o MySQL Workbench ou phpMyAdmin).
-
-Crie um banco de dados com o nome gestordeinventario.
-
-Importe e execute o arquivo database.sql (que deve estar na pasta do projeto) para criar a estrutura das tabelas automaticamente.
-
-Inicie o servidor:
-No terminal, execute o comando abaixo para ligar a API backend:
-
-Bash
-node server.js
-Se tudo estiver correto, você verá a mensagem de conexão com sucesso no banco de dados!
-
-Desenvolvido por Fábio Matheus Soares da Silva.
+### 1️⃣ Clone o repositório
+```bash
+git clone [https://github.com/fabio-tech-dev/AssetPulse.git](https://github.com/fabio-tech-dev/AssetPulse.git)
