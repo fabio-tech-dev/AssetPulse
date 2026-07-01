@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.svg" alt="AssetPulse Logo" width="130" />
 
-  # 🟣 AssetPulse
+  # AssetPulse
 
   *Sistema SaaS Multi-Tenant para Gestão Inteligente de Inventário de TI*
 
@@ -44,5 +44,32 @@ A arquitetura foi projetada seguindo o modelo **Multi-Tenant**, o que significa 
 Para rodar e testar esta aplicação localmente no seu ambiente de desenvolvimento, siga o passo a passo abaixo:
 
 ### 1️⃣ Clone o repositório
-```bash
-git clone [https://github.com/fabio-tech-dev/AssetPulse.git](https://github.com/fabio-tech-dev/AssetPulse.git)
+
+```git clone https://github.com/fabio-tech-dev/AssetPulse.git```
+
+### 2️⃣ Instale as dependências
+Abra o terminal do seu editor de código dentro da pasta raiz do projeto e execute:
+
+```npm install```
+
+### 3️⃣ Configure as variáveis de ambiente
+Crie um arquivo chamado .env (exatamente com o ponto no início) na raiz do projeto e adicione as suas credenciais locais do seu banco de dados MySQL:
+
+```DB_HOST=localhost```
+```DB_USER=seu_usuario_mysql```
+```DB_PASS=sua_senha_mysql```
+```DB_NAME=gestordeinventario```
+```PORT=3000```
+
+### 4️⃣ Configure o Banco de Dados
+Abra o seu gerenciador MySQL (como o MySQL Workbench).
+
+```Crie um novo banco de dados (Schema) com o nome de gestordeinventario.```
+```Importe e execute o arquivo database.sql (que está localizado na pasta do projeto) para criar toda a estrutura de tabelas automaticamente.```
+
+### 5️⃣ Inicie o servidor
+Com o banco configurado, volte ao terminal e ligue a aplicação rodando:
+
+```node server.js```
+
+Assim que o comando for executado, o terminal exibirá a mensagem de confirmação e o sistema estará pronto para receber conexões!
