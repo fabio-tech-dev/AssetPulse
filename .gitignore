@@ -1,0 +1,12 @@
+# Pastas de dependências
+node_modules/
+
+# Arquivos de segredos
+.env
+
+# Configurações de IDE
+.vscode/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db

@@ -1,0 +1,20 @@
+<svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 10px;">
+
+    <defs>
+
+        <linearGradient id="logoGradCad" x1="0%" y1="0%" x2="100%" y2="100%">
+
+            <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1" />
+
+            <stop offset="100%" style="stop-color:#662d91;stop-opacity:1" />
+
+        </linearGradient>
+
+    </defs>
+
+    <circle cx="50" cy="50" r="48" fill="none" stroke="url(#logoGradCad)" stroke-width="4"/>
+
+    <path d="M50 15C36.2 15 25 26.2 25 40C25 55 50 85 50 85C50 85 75 55 75 40C75 26.2 63.8 15 50 15ZM42 55V35H48V55H42ZM52 55V28H58V55H52Z" fill="url(#logoGradCad)"/>
+
+</svg> 
+
