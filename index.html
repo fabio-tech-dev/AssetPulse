@@ -4,120 +4,851 @@ DESCRIÇÃO: Página principal (dashboard) do sistema AssetPulse.
 Exibe um resumo dos ativos e licenças, KPIs, e oferece navegação
 para as telas de gerenciamento detalhado.
 ======================================================== -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AssetPulse - Gestor de Inventário</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="toast-container"></div> 
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="toast-container"></div>
 
     <main class="container">
-        <header class="cabecalho">
-            <div class="logo-area" onclick="alternarTela('tela-inicio')" title="Voltar ao Início">
-                <svg width="40" height="40" viewBox="0 0 100 100" class="logo-svg" xmlns="http://www.w3.org/2000/svg">
-                    <defs><linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9b59b6"/><stop offset="100%" stop-color="#662d91"/></linearGradient></defs>
-                    <circle cx="50" cy="50" r="48" fill="none" stroke="url(#logoGrad)" stroke-width="4"/>
-                    <path d="M50 15C36.2 15 25 26.2 25 40C25 55 50 85 50 85C50 85 75 55 75 40C75 26.2 63.8 15 50 15ZM42 55V35H48V55H42ZM52 55V28H58V55H52Z" fill="url(#logoGrad)"/>
-                </svg>
-                <div class="titulo-area"><h1>AssetPulse</h1><span class="subtitulo">Sistema de Gestão</span></div>
-            </div>
-            <nav class="menu-superior"></nav>
-            <button onclick="fazerLogout()" class="btn-sair">Sair</button>
-        </header>
+      <header class="cabecalho">
+        <div
+          class="logo-area"
+          onclick="alternarTela('tela-inicio')"
+          title="Voltar ao Início"
+        >
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 100 100"
+            class="logo-svg"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#9b59b6" />
+                <stop offset="100%" stop-color="#662d91" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="50"
+              cy="50"
+              r="48"
+              fill="none"
+              stroke="url(#logoGrad)"
+              stroke-width="4"
+            />
+            <path
+              d="M50 15C36.2 15 25 26.2 25 40C25 55 50 85 50 85C50 85 75 55 75 40C75 26.2 63.8 15 50 15ZM42 55V35H48V55H42ZM52 55V28H58V55H52Z"
+              fill="url(#logoGrad)"
+            />
+          </svg>
+          <div class="titulo-area">
+            <h1>AssetPulse</h1>
+            <span class="subtitulo">Sistema de Gestão</span>
+          </div>
+        </div>
+        <nav class="menu-superior"></nav>
+        <button onclick="fazerLogout()" class="btn-sair">Sair</button>
+      </header>
 
-        <div id="tela-inicio">
-            <div class="boas-vindas-panel">
-                <div><h2 id="mensagem-boas-vindas">Bem-vindo! 👋</h2><p>Seu parque tecnológico está operando com <strong style="color: #8e44ad;" id="eficiencia-texto">Calculando...</strong> de saúde hoje.</p></div>
-            </div>
-
-            <div class="cards-resumo-container">
-                <div class="card-kpi border-green"><div><h3>Total de Ativos</h3><p id="kpi-total-pcs">0</p></div><div class="icon">🖥️</div></div>
-                <div class="card-kpi border-yellow"><div><h3>Na Bancada / Manut.</h3><p id="kpi-manutencao">0</p></div><div class="icon">🛠️</div></div>
-                <div class="card-kpi border-red"><div><h3>Licenças em Alerta</h3><p id="kpi-licencas">0</p></div><div class="icon">⚠️</div></div>
-                <div class="card-kpi bg-gradient"><div><h3>Status do Sistema</h3><p id="kpi-status">Analisando</p></div><div class="icon">🚀</div></div>
-            </div>
-
-            <div class="health-bar-container">
-                <div class="health-bar-labels"><span>Nível de Integridade dos Equipamentos (PCs Ativos vs Inativos)</span><span id="health-percentage">0%</span></div>
-                <div class="health-bar-bg"><div class="health-bar-fill" id="health-bar-fill" style="width: 0%;"></div></div>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <h2 style="margin: 0;">💻 Resumo de Ativos (PCs)</h2><button class="btn-acao-secundario" onclick="alternarTela('tela-gerenciar-ativos')">Gestão de Ativos &#8594;</button>
-            </div>
-            <section class="card-tabela"><div class="table-responsive"><table id="tabela-ativos"><thead><tr><th>ID</th><th>Nome do Computador</th><th>Código do Ativo</th><th>Departamento</th><th>Status</th></tr></thead><tbody id="corpo-tabela"><tr><td colspan="5">Carregando dados...</td></tr></tbody></table></div></section>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px; margin-bottom: 10px;">
-                <h2 style="margin: 0;">🔑 Resumo de Licenças</h2><button class="btn-acao-secundario" onclick="alternarTela('tela-gerenciar-licencas')">Gestão de Licenças &#8594;</button>
-            </div>
-            <section class="card-tabela"><div class="table-responsive"><table id="tabela-licencas-resumo"><thead><tr><th>Software</th><th>Vencimento</th><th>Status (Dias)</th></tr></thead><tbody id="corpo-tabela-licencas-resumo"><tr><td colspan="3">Carregando dados...</td></tr></tbody></table></div></section>
-
-            <section class="carrossel-container" style="margin-top: 40px;">
-                <div class="slide ativo" id="slide1"><div class="slide-conteudo"><h2>SEGURANÇA INTEGRADA</h2><p>Controle total de acessos, senhas criptografadas e prevenção de invasões.</p></div></div>
-                <div class="slide" id="slide2"><div class="slide-conteudo"><h2>ACESSO MULTIPLATAFORMA</h2><p>Gerencie seu inventário de qualquer lugar, no computador ou na palma da sua mão.</p></div></div>
-            </section>
-
-            <section class="servicos-container" style="margin-top: 40px;">
-                <div style="text-align: center; margin-bottom: 30px;"><h2 style="color: #ffffff; margin: 0;">Recursos do Sistema</h2><p style="color: #a78bfa;">Clique em acessar para ver os detalhes da nossa tecnologia</p></div>
-                <div class="servicos-grid">
-                    <div class="servico-card"><div class="servico-icone">☁️</div><h3>Nuvem e Backups</h3><p>Seus dados seguros e acessíveis com backup.</p><button class="btn-acao-secundario" style="margin-top: 15px; width: 100%;" onclick="abrirModalInfo('nuvem')">Acessar Detalhes</button></div>
-                    <div class="servico-card"><div class="servico-icone">🔒</div><h3>Segurança Avançada</h3><p>Proteção de ponta a ponta e níveis de acesso.</p><button class="btn-acao-secundario" style="margin-top: 15px; width: 100%;" onclick="abrirModalInfo('seguranca')">Acessar Detalhes</button></div>
-                    <div class="servico-card"><div class="servico-icone">🚀</div><h3>Suporte Dedicado</h3><p>Nossa equipe técnica pronta para resolver problemas.</p><button class="btn-acao-secundario" style="margin-top: 15px; width: 100%;" onclick="abrirModalInfo('suporte')">Acessar Detalhes</button></div>
-                    <div class="servico-card"><div class="servico-icone">🔄</div><h3>Alertas Inteligentes</h3><p>Receba notificações visuais antes do vencimento.</p><button class="btn-acao-secundario" style="margin-top: 15px; width: 100%;" onclick="abrirModalInfo('alertas')">Acessar Detalhes</button></div>
-                    <div class="servico-card"><div class="servico-icone">⚙️</div><h3>API Poderosa</h3><p>Integre o gestor com outros sistemas corporativos.</p><button class="btn-acao-secundario" style="margin-top: 15px; width: 100%;" onclick="abrirModalInfo('api')">Acessar Detalhes</button></div>
-                    <div class="servico-card"><div class="servico-icone">🛠️</div><h3>Manutenção</h3><p>Agende e monitore visitas técnicas pelo painel.</p><button class="btn-acao-secundario" style="margin-top: 15px; width: 100%;" onclick="abrirModalInfo('manutencao')">Acessar Detalhes</button></div>
-                </div>
-            </section>
+      <div id="tela-inicio">
+        <div class="boas-vindas-panel">
+          <div>
+            <h2 id="mensagem-boas-vindas">Bem-vindo! 👋</h2>
+            <p>
+              Seu parque tecnológico está operando com
+              <strong style="color: #8e44ad" id="eficiencia-texto"
+                >Calculando...</strong
+              >
+              de saúde hoje.
+            </p>
+          </div>
         </div>
 
-        <div id="tela-gerenciar-ativos" style="display: none;">
-            <div style="display: flex; align-items: center; margin-bottom: 20px;"><a href="#" class="btn-voltar" onclick="alternarTela('tela-inicio')" style="margin: 0;">&#8592; Voltar para o Início</a></div>
-            <section class="card-tabela"><h2 style="margin-bottom: 5px;">💻 Gerenciamento Completo de Ativos</h2>
-                <div class="container-acoes">
-                    <select id="filtro-status-ativos" class="barra-pesquisa-moderna" onchange="filtrarAtivosPorStatus(this.value)" style="cursor: pointer; appearance: auto;"><option value="">🔎 Todos os PCs (Limpar Filtro)</option><option value="Ativo">🟢 Filtrar Apenas: Ativos</option><option value="Em Manutenção">🟡 Filtrar Apenas: Em Manutenção</option><option value="Inativo">🔴 Filtrar Apenas: Inativos / Descartados</option></select>
-                    <div class="grupo-botoes-acao"><button class="btn-acao-moderno" onclick="abrirModalPC(event)">+ Cadastrar PC</button><button class="btn-acao-secundario" onclick="gerarRelatorioCSV(event)">📄 Exportar Relatório</button></div>
-                </div>
-                <div class="table-responsive"><table id="tabela-ativos-completa"><thead><tr><th>ID</th><th>Nome do Computador</th><th>Código do Ativo</th><th>Departamento</th><th>Status</th><th>Ações</th></tr></thead><tbody id="corpo-tabela-ativos-completa"><tr><td colspan="6">Carregando dados...</td></tr></tbody></table></div>
-            </section>
+        <div class="cards-resumo-container">
+          <div class="card-kpi border-green">
+            <div>
+              <h3>Total de Ativos</h3>
+              <p id="kpi-total-pcs">0</p>
+            </div>
+            <div class="icon">🖥️</div>
+          </div>
+          <div class="card-kpi border-yellow">
+            <div>
+              <h3>Na Bancada / Manut.</h3>
+              <p id="kpi-manutencao">0</p>
+            </div>
+            <div class="icon">🛠️</div>
+          </div>
+          <div class="card-kpi border-red">
+            <div>
+              <h3>Licenças em Alerta</h3>
+              <p id="kpi-licencas">0</p>
+            </div>
+            <div class="icon">⚠️</div>
+          </div>
+          <div class="card-kpi bg-gradient">
+            <div>
+              <h3>Status do Sistema</h3>
+              <p id="kpi-status">Analisando</p>
+            </div>
+            <div class="icon">🚀</div>
+          </div>
         </div>
 
-        <div id="tela-gerenciar-licencas" style="display: none;">
-            <div style="display: flex; align-items: center; margin-bottom: 20px;"><a href="#" class="btn-voltar" onclick="alternarTela('tela-inicio')" style="margin: 0;">&#8592; Voltar para o Início</a></div>
-            <section class="card-tabela"><h2 style="margin-bottom: 5px;">🔑 Gerenciamento de Licenças Ativas</h2>
-                <div class="container-acoes">
-                    <input type="text" id="busca-licencas" class="barra-pesquisa-moderna" onkeyup="filtrarTabela('corpo-tabela-licencas', this.value)" placeholder="Pesquisar software, fornecedor ou chave...">
-                    <div class="grupo-botoes-acao"><button class="btn-acao-moderno" onclick="abrirModalLicenca(event)">+ Cadastrar Licença</button><button class="btn-acao-secundario" onclick="gerarRelatorioLicencas(event)">📄 Exportar Relatório</button></div>
-                </div>
-                <div class="table-responsive"><table id="tabela-licencas"><thead><tr><th>Software</th><th>Chave (Key)</th><th>Data de Compra</th><th>Vencimento</th><th>Status (Dias)</th><th>Ações</th></tr></thead><tbody id="corpo-tabela-licencas"><tr><td colspan="6">Carregando dados...</td></tr></tbody></table></div>
-            </section>
-
-            <section id="secao-canceladas" class="card-tabela" style="margin-top: 40px;">
-                <h2 style="margin-bottom: 5px;">🚫 Histórico de Licenças Canceladas</h2>
-                <div class="container-acoes"><input type="text" id="busca-licencas-canceladas" class="barra-pesquisa-moderna" onkeyup="filtrarTabela('corpo-tabela-licencas-canceladas', this.value)" placeholder="Pesquisar histórico por software ou chave..."></div>
-                <div class="table-responsive"><table id="tabela-licencas-canceladas"><thead><tr><th>Software</th><th>Chave (Key)</th><th>Data da Compra</th><th>Data do Cancelamento</th></tr></thead><tbody id="corpo-tabela-licencas-canceladas"><tr><td colspan="4">Carregando dados...</td></tr></tbody></table></div>
-            </section>
+        <div class="health-bar-container">
+          <div class="health-bar-labels">
+            <span
+              >Nível de Integridade dos Equipamentos (PCs Ativos vs
+              Inativos)</span
+            ><span id="health-percentage">0%</span>
+          </div>
+          <div class="health-bar-bg">
+            <div
+              class="health-bar-fill"
+              id="health-bar-fill"
+              style="width: 0%"
+            ></div>
+          </div>
         </div>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+          "
+        >
+          <h2 style="margin: 0">💻 Resumo de Ativos (PCs)</h2>
+          <button
+            class="btn-acao-secundario"
+            onclick="alternarTela('tela-gerenciar-ativos')"
+          >
+            Gestão de Ativos &#8594;
+          </button>
+        </div>
+        <section class="card-tabela">
+          <div class="table-responsive">
+            <table id="tabela-ativos">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome do Computador</th>
+                  <th>Código do Ativo</th>
+                  <th>Departamento</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-tabela">
+                <tr>
+                  <td colspan="5">Carregando dados...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 10px;
+          "
+        >
+          <h2 style="margin: 0">🔑 Resumo de Licenças</h2>
+          <button
+            class="btn-acao-secundario"
+            onclick="alternarTela('tela-gerenciar-licencas')"
+          >
+            Gestão de Licenças &#8594;
+          </button>
+        </div>
+        <section class="card-tabela">
+          <div class="table-responsive">
+            <table id="tabela-licencas-resumo">
+              <thead>
+                <tr>
+                  <th>Software</th>
+                  <th>Vencimento</th>
+                  <th>Status (Dias)</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-tabela-licencas-resumo">
+                <tr>
+                  <td colspan="3">Carregando dados...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="carrossel-container" style="margin-top: 40px">
+          <div class="slide ativo" id="slide1">
+            <div class="slide-conteudo">
+              <h2>SEGURANÇA INTEGRADA</h2>
+              <p>
+                Controle total de acessos, senhas criptografadas e prevenção de
+                invasões.
+              </p>
+            </div>
+          </div>
+          <div class="slide" id="slide2">
+            <div class="slide-conteudo">
+              <h2>ACESSO MULTIPLATAFORMA</h2>
+              <p>
+                Gerencie seu inventário de qualquer lugar, no computador ou na
+                palma da sua mão.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="servicos-container" style="margin-top: 40px">
+          <div style="text-align: center; margin-bottom: 30px">
+            <h2 style="color: #ffffff; margin: 0">Recursos do Sistema</h2>
+            <p style="color: #a78bfa">
+              Clique em acessar para ver os detalhes da nossa tecnologia
+            </p>
+          </div>
+          <div class="servicos-grid">
+            <div class="servico-card">
+              <div class="servico-icone">☁️</div>
+              <h3>Nuvem e Backups</h3>
+              <p>Seus dados seguros e acessíveis com backup.</p>
+              <button
+                class="btn-acao-secundario"
+                style="margin-top: 15px; width: 100%"
+                onclick="abrirModalInfo('nuvem')"
+              >
+                Acessar Detalhes
+              </button>
+            </div>
+            <div class="servico-card">
+              <div class="servico-icone">🔒</div>
+              <h3>Segurança Avançada</h3>
+              <p>Proteção de ponta a ponta e níveis de acesso.</p>
+              <button
+                class="btn-acao-secundario"
+                style="margin-top: 15px; width: 100%"
+                onclick="abrirModalInfo('seguranca')"
+              >
+                Acessar Detalhes
+              </button>
+            </div>
+            <div class="servico-card">
+              <div class="servico-icone">🚀</div>
+              <h3>Suporte Dedicado</h3>
+              <p>Nossa equipe técnica pronta para resolver problemas.</p>
+              <button
+                class="btn-acao-secundario"
+                style="margin-top: 15px; width: 100%"
+                onclick="abrirModalInfo('suporte')"
+              >
+                Acessar Detalhes
+              </button>
+            </div>
+            <div class="servico-card">
+              <div class="servico-icone">🔄</div>
+              <h3>Alertas Inteligentes</h3>
+              <p>Receba notificações visuais antes do vencimento.</p>
+              <button
+                class="btn-acao-secundario"
+                style="margin-top: 15px; width: 100%"
+                onclick="abrirModalInfo('alertas')"
+              >
+                Acessar Detalhes
+              </button>
+            </div>
+            <div class="servico-card">
+              <div class="servico-icone">⚙️</div>
+              <h3>API Poderosa</h3>
+              <p>Integre o gestor com outros sistemas corporativos.</p>
+              <button
+                class="btn-acao-secundario"
+                style="margin-top: 15px; width: 100%"
+                onclick="abrirModalInfo('api')"
+              >
+                Acessar Detalhes
+              </button>
+            </div>
+            <div class="servico-card">
+              <div class="servico-icone">🛠️</div>
+              <h3>Manutenção</h3>
+              <p>Agende e monitore visitas técnicas pelo painel.</p>
+              <button
+                class="btn-acao-secundario"
+                style="margin-top: 15px; width: 100%"
+                onclick="abrirModalInfo('manutencao')"
+              >
+                Acessar Detalhes
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div id="tela-gerenciar-ativos" style="display: none">
+        <div style="display: flex; align-items: center; margin-bottom: 20px">
+          <a
+            href="#"
+            class="btn-voltar"
+            onclick="alternarTela('tela-inicio')"
+            style="margin: 0"
+            >&#8592; Voltar para o Início</a
+          >
+        </div>
+        <section class="card-tabela">
+          <h2 style="margin-bottom: 5px">
+            💻 Gerenciamento Completo de Ativos
+          </h2>
+          <div class="container-acoes">
+            <select
+              id="filtro-status-ativos"
+              class="barra-pesquisa-moderna"
+              onchange="filtrarAtivosPorStatus(this.value)"
+              style="cursor: pointer; appearance: auto"
+            >
+              <option value="">🔎 Todos os PCs (Limpar Filtro)</option>
+              <option value="Ativo">🟢 Filtrar Apenas: Ativos</option>
+              <option value="Em Manutenção">
+                🟡 Filtrar Apenas: Em Manutenção
+              </option>
+              <option value="Inativo">
+                🔴 Filtrar Apenas: Inativos / Descartados
+              </option>
+            </select>
+            <div class="grupo-botoes-acao">
+              <button class="btn-acao-moderno" onclick="abrirModalPC(event)">
+                + Cadastrar PC</button
+              ><button
+                class="btn-acao-secundario"
+                onclick="gerarRelatorioCSV(event)"
+              >
+                📄 Exportar Relatório
+              </button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table id="tabela-ativos-completa">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome do Computador</th>
+                  <th>Código do Ativo</th>
+                  <th>Departamento</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-tabela-ativos-completa">
+                <tr>
+                  <td colspan="6">Carregando dados...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div id="tela-gerenciar-licencas" style="display: none">
+        <div style="display: flex; align-items: center; margin-bottom: 20px">
+          <a
+            href="#"
+            class="btn-voltar"
+            onclick="alternarTela('tela-inicio')"
+            style="margin: 0"
+            >&#8592; Voltar para o Início</a
+          >
+        </div>
+        <section class="card-tabela">
+          <h2 style="margin-bottom: 5px">
+            🔑 Gerenciamento de Licenças Ativas
+          </h2>
+          <div class="container-acoes">
+            <input
+              type="text"
+              id="busca-licencas"
+              class="barra-pesquisa-moderna"
+              onkeyup="filtrarTabela('corpo-tabela-licencas', this.value)"
+              placeholder="Pesquisar software, fornecedor ou chave..."
+            />
+            <div class="grupo-botoes-acao">
+              <button
+                class="btn-acao-moderno"
+                onclick="abrirModalLicenca(event)"
+              >
+                + Cadastrar Licença</button
+              ><button
+                class="btn-acao-secundario"
+                onclick="gerarRelatorioLicencas(event)"
+              >
+                📄 Exportar Relatório
+              </button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table id="tabela-licencas">
+              <thead>
+                <tr>
+                  <th>Software</th>
+                  <th>Chave (Key)</th>
+                  <th>Data de Compra</th>
+                  <th>Vencimento</th>
+                  <th>Status (Dias)</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-tabela-licencas">
+                <tr>
+                  <td colspan="6">Carregando dados...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section
+          id="secao-canceladas"
+          class="card-tabela"
+          style="margin-top: 40px"
+        >
+          <h2 style="margin-bottom: 5px">
+            🚫 Histórico de Licenças Canceladas
+          </h2>
+          <div class="container-acoes">
+            <input
+              type="text"
+              id="busca-licencas-canceladas"
+              class="barra-pesquisa-moderna"
+              onkeyup="
+                filtrarTabela('corpo-tabela-licencas-canceladas', this.value)
+              "
+              placeholder="Pesquisar histórico por software ou chave..."
+            />
+          </div>
+          <div class="table-responsive">
+            <table id="tabela-licencas-canceladas">
+              <thead>
+                <tr>
+                  <th>Software</th>
+                  <th>Chave (Key)</th>
+                  <th>Data da Compra</th>
+                  <th>Data do Cancelamento</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-tabela-licencas-canceladas">
+                <tr>
+                  <td colspan="4">Carregando dados...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </main>
 
     <footer class="rodape-site">
-        <p>Copyright 2026 &copy; AssetPulse. Todos os direitos reservados.</p>
-        <p style="margin-top: 5px; font-size: 13px; color: #9d4edd; font-weight: bold;">Versão Teste 1.0.0</p>
+      <p>Copyright 2026 &copy; AssetPulse. Todos os direitos reservados.</p>
+      <p
+        style="
+          margin-top: 5px;
+          font-size: 13px;
+          color: #9d4edd;
+          font-weight: bold;
+        "
+      >
+        Versão Preview 1.0.0
+      </p>
     </footer>
 
-    <div id="modal-info-recurso" class="modal-overlay"><div class="modal-box" style="max-width: 550px;"><div class="modal-header"><h2 id="info-titulo">Título</h2><button class="btn-fechar-modal" onclick="fecharModalInfo()">&times;</button></div><div style="text-align: center; font-size: 55px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));" id="info-icone">☁️</div><div id="info-conteudo" style="color: #c4b5fd; font-size: 15px; line-height: 1.6; text-align: left; background: #0b0914; padding: 20px; border-radius: 8px; border: 1px solid #2b2245;"></div><button class="btn-salvar-modal" onclick="fecharModalInfo()" style="margin-top: 25px; background: #2b2245; color: #d8b4fe; box-shadow: none;">&#8592; Voltar</button></div></div>
+    <div id="modal-info-recurso" class="modal-overlay">
+      <div class="modal-box" style="max-width: 550px">
+        <div class="modal-header">
+          <h2 id="info-titulo">Título</h2>
+          <button class="btn-fechar-modal" onclick="fecharModalInfo()">
+            &times;
+          </button>
+        </div>
+        <div
+          style="
+            text-align: center;
+            font-size: 55px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+          "
+          id="info-icone"
+        >
+          ☁️
+        </div>
+        <div
+          id="info-conteudo"
+          style="
+            color: #c4b5fd;
+            font-size: 15px;
+            line-height: 1.6;
+            text-align: left;
+            background: #0b0914;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #2b2245;
+          "
+        ></div>
+        <button
+          class="btn-salvar-modal"
+          onclick="fecharModalInfo()"
+          style="
+            margin-top: 25px;
+            background: #2b2245;
+            color: #d8b4fe;
+            box-shadow: none;
+          "
+        >
+          &#8592; Voltar
+        </button>
+      </div>
+    </div>
 
-    <div id="modal-cadastro-pc" class="modal-overlay"><div class="modal-box"><div class="modal-header"><h2>Cadastrar Novo PC</h2><button class="btn-fechar-modal" onclick="fecharModalPC()">&times;</button></div><form id="form-novo-pc"><div class="campo"><label>Nome do Computador:</label><input type="text" id="novo-pc-nome" required></div><div class="campo"><label>Código do Ativo (Etiqueta Física):</label><input type="text" id="novo-pc-codigo" placeholder="Ex: ATV-015"><div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="check-gerar-codigo" style="width: auto; cursor: pointer;"><label for="check-gerar-codigo" style="margin: 0; font-size: 13px; font-weight: 500; cursor: pointer; color: #8e44ad;">Gerar código automático</label></div></div><div class="campo"><label>Departamento:</label><input type="text" id="novo-pc-depto" required></div><div class="campo"><label>Status:</label><select id="novo-pc-status" required><option value="ativo">🟢 Ativo</option><option value="manutencao">🟡 Em Manutenção</option><option value="descartado">🔴 Inativo / Descartado</option></select></div><button type="submit" class="btn-salvar-modal">Salvar Computador</button></form></div></div>
-    <div id="modal-editar-pc" class="modal-overlay"><div class="modal-box"><div class="modal-header"><h2>Editar Computador</h2><button class="btn-fechar-modal" onclick="fecharModalEditar()">&times;</button></div><form id="form-editar-pc"><input type="hidden" id="edit-pc-id"><div class="campo"><label>Nome do Computador:</label><input type="text" id="edit-pc-nome" required></div><div class="campo"><label>Código do Ativo (Etiqueta):</label><input type="text" id="edit-pc-codigo" required></div><div class="campo"><label>Departamento:</label><input type="text" id="edit-pc-depto" required></div><div class="campo"><label>Status:</label><select id="edit-pc-status" required><option value="ativo">🟢 Ativo</option><option value="manutencao">🟡 Em Manutenção</option><option value="descartado">🔴 Inativo / Descartado</option></select></div><button type="submit" class="btn-salvar-modal">Atualizar Computador</button></form></div></div>
-    <div id="modal-excluir-pc" class="modal-overlay"><div class="modal-box"><div class="modal-header"><h2>Confirmar Exclusão</h2><button class="btn-fechar-modal" onclick="fecharModalExcluir()">&times;</button></div><form id="form-excluir-pc"><input type="hidden" id="excluir-pc-id"><p style="margin-bottom: 20px; color: #c4b5fd; text-align: center; font-size: 15px;">Deseja realmente excluir permanentemente o computador <br><strong id="excluir-pc-nome" style="color: #e74c3c; font-size: 18px;"></strong>?</p><div style="display: flex; gap: 10px; margin-top: 20px;" class="flex-mobile-column"><button type="button" class="btn-salvar-modal" onclick="fecharModalExcluir()" style="background: #2b2245; color: #d8b4fe; box-shadow: none;">Não, Cancelar</button><button type="submit" class="btn-salvar-modal" style="background: linear-gradient(135deg, #e74c3c, #c0392b); box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);">Sim, Excluir</button></div></form></div></div>
-    
-    <div id="modal-cadastro-licenca" class="modal-overlay"><div class="modal-box"><div class="modal-header"><h2>Cadastrar Licença</h2><button class="btn-fechar-modal" onclick="fecharModalLicenca()">&times;</button></div><form id="form-nova-licenca"><div class="campo"><label>Software (Nome e Versão):</label><input type="text" id="nova-lic-nome" required placeholder="Ex: Windows 11 Pro"></div><div class="campo"><label>Fornecedor:</label><input type="text" id="nova-lic-fornecedor" required placeholder="Ex: Microsoft"></div><div class="campo"><label>Chave de Ativação (Key):</label><input type="text" id="nova-lic-chave" required placeholder="XXXX-XXXX-XXXX-XXXX"></div><div style="display: flex; gap: 15px;" class="flex-mobile-column"><div class="campo" style="flex: 1;"><label>Data da Compra:</label><input type="date" id="nova-lic-compra" required></div><div class="campo" style="flex: 1;"><label>Vencimento:</label><input type="date" id="nova-lic-vencimento" required></div></div><button type="submit" class="btn-salvar-modal">Salvar Licença</button></form></div></div>
-    <div id="modal-renovar-licenca" class="modal-overlay"><div class="modal-box"><div class="modal-header"><h2>Renovar Licença</h2><button class="btn-fechar-modal" onclick="fecharModalRenovar()">&times;</button></div><form id="form-renovar-licenca"><input type="hidden" id="renovar-lic-id"><p style="margin-bottom: 20px; color: #4a3f55;">Você está renovando: <br><strong id="renovar-lic-nome" style="color: #8e44ad; font-size: 18px;"></strong></p><div class="campo"><label>Nova Data de Vencimento:</label><input type="date" id="renovar-lic-nova-data" required></div><button type="submit" class="btn-salvar-modal">Confirmar Renovação</button></form></div></div>
-    <div id="modal-cancelar-licenca" class="modal-overlay"><div class="modal-box"><div class="modal-header"><h2>Cancelar Licença</h2><button class="btn-fechar-modal" onclick="fecharModalCancelar()">&times;</button></div><form id="form-cancelar-licenca"><input type="hidden" id="cancelar-lic-id"><p style="margin-bottom: 20px; color: #c4b5fd; text-align: center; font-size: 15px;">Deseja mesmo cancelar a licença do <br><strong id="cancelar-lic-nome" style="color: #e74c3c; font-size: 18px;"></strong>?</p><div class="campo"><label>Informe o dia do cancelamento:</label><input type="date" id="cancelar-lic-data" required></div><div style="display: flex; gap: 10px; margin-top: 20px;" class="flex-mobile-column"><button type="button" class="btn-salvar-modal" onclick="fecharModalCancelar()" style="background: #2b2245; color: #d8b4fe; box-shadow: none;">Não, Voltar</button><button type="submit" class="btn-salvar-modal" style="background: linear-gradient(135deg, #e74c3c, #c0392b); box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);">Sim, Cancelar</button></div></form></div></div>
+    <div id="modal-cadastro-pc" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2>Cadastrar Novo PC</h2>
+          <button class="btn-fechar-modal" onclick="fecharModalPC()">
+            &times;
+          </button>
+        </div>
+        <form id="form-novo-pc">
+          <div class="campo">
+            <label>Nome do Computador:</label
+            ><input type="text" id="novo-pc-nome" required />
+          </div>
+          <div class="campo">
+            <label>Código do Ativo (Etiqueta Física):</label
+            ><input type="text" id="novo-pc-codigo" placeholder="Ex: ATV-015" />
+            <div
+              style="
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+              "
+            >
+              <input
+                type="checkbox"
+                id="check-gerar-codigo"
+                style="width: auto; cursor: pointer"
+              /><label
+                for="check-gerar-codigo"
+                style="
+                  margin: 0;
+                  font-size: 13px;
+                  font-weight: 500;
+                  cursor: pointer;
+                  color: #8e44ad;
+                "
+                >Gerar código automático</label
+              >
+            </div>
+          </div>
+          <div class="campo">
+            <label>Departamento:</label
+            ><input type="text" id="novo-pc-depto" required />
+          </div>
+          <div class="campo">
+            <label>Status:</label
+            ><select id="novo-pc-status" required>
+              <option value="ativo">🟢 Ativo</option>
+              <option value="manutencao">🟡 Em Manutenção</option>
+              <option value="descartado">🔴 Inativo / Descartado</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-salvar-modal">
+            Salvar Computador
+          </button>
+        </form>
+      </div>
+    </div>
+    <div id="modal-editar-pc" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2>Editar Computador</h2>
+          <button class="btn-fechar-modal" onclick="fecharModalEditar()">
+            &times;
+          </button>
+        </div>
+        <form id="form-editar-pc">
+          <input type="hidden" id="edit-pc-id" />
+          <div class="campo">
+            <label>Nome do Computador:</label
+            ><input type="text" id="edit-pc-nome" required />
+          </div>
+          <div class="campo">
+            <label>Código do Ativo (Etiqueta):</label
+            ><input type="text" id="edit-pc-codigo" required />
+          </div>
+          <div class="campo">
+            <label>Departamento:</label
+            ><input type="text" id="edit-pc-depto" required />
+          </div>
+          <div class="campo">
+            <label>Status:</label
+            ><select id="edit-pc-status" required>
+              <option value="ativo">🟢 Ativo</option>
+              <option value="manutencao">🟡 Em Manutenção</option>
+              <option value="descartado">🔴 Inativo / Descartado</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-salvar-modal">
+            Atualizar Computador
+          </button>
+        </form>
+      </div>
+    </div>
+    <div id="modal-excluir-pc" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2>Confirmar Exclusão</h2>
+          <button class="btn-fechar-modal" onclick="fecharModalExcluir()">
+            &times;
+          </button>
+        </div>
+        <form id="form-excluir-pc">
+          <input type="hidden" id="excluir-pc-id" />
+          <p
+            style="
+              margin-bottom: 20px;
+              color: #c4b5fd;
+              text-align: center;
+              font-size: 15px;
+            "
+          >
+            Deseja realmente excluir permanentemente o computador <br /><strong
+              id="excluir-pc-nome"
+              style="color: #e74c3c; font-size: 18px"
+            ></strong
+            >?
+          </p>
+          <div
+            style="display: flex; gap: 10px; margin-top: 20px"
+            class="flex-mobile-column"
+          >
+            <button
+              type="button"
+              class="btn-salvar-modal"
+              onclick="fecharModalExcluir()"
+              style="background: #2b2245; color: #d8b4fe; box-shadow: none"
+            >
+              Não, Cancelar</button
+            ><button
+              type="submit"
+              class="btn-salvar-modal"
+              style="
+                background: linear-gradient(135deg, #e74c3c, #c0392b);
+                box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+              "
+            >
+              Sim, Excluir
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="modal-cadastro-licenca" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2>Cadastrar Licença</h2>
+          <button class="btn-fechar-modal" onclick="fecharModalLicenca()">
+            &times;
+          </button>
+        </div>
+        <form id="form-nova-licenca">
+          <div class="campo">
+            <label>Software (Nome e Versão):</label
+            ><input
+              type="text"
+              id="nova-lic-nome"
+              required
+              placeholder="Ex: Windows 11 Pro"
+            />
+          </div>
+          <div class="campo">
+            <label>Fornecedor:</label
+            ><input
+              type="text"
+              id="nova-lic-fornecedor"
+              required
+              placeholder="Ex: Microsoft"
+            />
+          </div>
+          <div class="campo">
+            <label>Chave de Ativação (Key):</label
+            ><input
+              type="text"
+              id="nova-lic-chave"
+              required
+              placeholder="XXXX-XXXX-XXXX-XXXX"
+            />
+          </div>
+          <div style="display: flex; gap: 15px" class="flex-mobile-column">
+            <div class="campo" style="flex: 1">
+              <label>Data da Compra:</label
+              ><input type="date" id="nova-lic-compra" required />
+            </div>
+            <div class="campo" style="flex: 1">
+              <label>Vencimento:</label
+              ><input type="date" id="nova-lic-vencimento" required />
+            </div>
+          </div>
+          <button type="submit" class="btn-salvar-modal">Salvar Licença</button>
+        </form>
+      </div>
+    </div>
+    <div id="modal-renovar-licenca" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2>Renovar Licença</h2>
+          <button class="btn-fechar-modal" onclick="fecharModalRenovar()">
+            &times;
+          </button>
+        </div>
+        <form id="form-renovar-licenca">
+          <input type="hidden" id="renovar-lic-id" />
+          <p style="margin-bottom: 20px; color: #4a3f55">
+            Você está renovando: <br /><strong
+              id="renovar-lic-nome"
+              style="color: #8e44ad; font-size: 18px"
+            ></strong>
+          </p>
+          <div class="campo">
+            <label>Nova Data de Vencimento:</label
+            ><input type="date" id="renovar-lic-nova-data" required />
+          </div>
+          <button type="submit" class="btn-salvar-modal">
+            Confirmar Renovação
+          </button>
+        </form>
+      </div>
+    </div>
+    <div id="modal-cancelar-licenca" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2>Cancelar Licença</h2>
+          <button class="btn-fechar-modal" onclick="fecharModalCancelar()">
+            &times;
+          </button>
+        </div>
+        <form id="form-cancelar-licenca">
+          <input type="hidden" id="cancelar-lic-id" />
+          <p
+            style="
+              margin-bottom: 20px;
+              color: #c4b5fd;
+              text-align: center;
+              font-size: 15px;
+            "
+          >
+            Deseja mesmo cancelar a licença do <br /><strong
+              id="cancelar-lic-nome"
+              style="color: #e74c3c; font-size: 18px"
+            ></strong
+            >?
+          </p>
+          <div class="campo">
+            <label>Informe o dia do cancelamento:</label
+            ><input type="date" id="cancelar-lic-data" required />
+          </div>
+          <div
+            style="display: flex; gap: 10px; margin-top: 20px"
+            class="flex-mobile-column"
+          >
+            <button
+              type="button"
+              class="btn-salvar-modal"
+              onclick="fecharModalCancelar()"
+              style="background: #2b2245; color: #d8b4fe; box-shadow: none"
+            >
+              Não, Voltar</button
+            ><button
+              type="submit"
+              class="btn-salvar-modal"
+              style="
+                background: linear-gradient(135deg, #e74c3c, #c0392b);
+                box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+              "
+            >
+              Sim, Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="modal-qrcode" class="modal-overlay">
+      <div class="modal-box" style="max-width: 380px;">
+        <div class="modal-header">
+          <h2>Etiqueta Inteligente</h2>
+          <button type="button" class="btn-fechar-modal" onclick="fecharModalQR()">
+            &times;
+          </button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 10px 0;">
+          <p id="qr-ativo-nome" style="margin: 0; font-size: 18px; font-weight: bold; color: #662d91;"></p>
+          
+          <img id="qr-imagem" src="" alt="QR Code" style="width: 200px; height: 200px; border: 4px solid #f4f4f9; border-radius: 8px;">
+          
+          <button type="button" onclick="imprimirQR()" class="btn-salvar-modal" style="width: 100%; background: #662d91; color: white; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none; font-size: 16px; margin-top: 10px;">
+            🖨️ Imprimir Etiqueta
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assistente de IA Flutuante (Chatbot) -->
+    <div class="chat-widget-container">
+      <button class="chat-toggle-btn" id="chat-toggle-btn" onclick="toggleChat()" title="Falar com o Assistente">
+        <span>🤖</span>
+      </button>
+
+      <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+          <div class="chat-header-info">
+            <div class="chat-bot-avatar">🤖</div>
+            <div class="chat-bot-meta">
+              <h4>PulseBot</h4>
+              <span class="chat-status">Online</span>
+            </div>
+          </div>
+          <button type="button" class="chat-close-btn" onclick="toggleChat()">&times;</button>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+          <div class="msg-bot">
+            Olá! Sou o PulseBot, seu assistente virtual do AssetPulse. Como posso te ajudar hoje?
+          </div>
+        </div>
+
+        <form class="chat-input-area" id="chat-form" onsubmit="enviarMensagemChat(event)">
+          <input type="text" id="chat-input" placeholder="Digite sua mensagem..." required autocomplete="off" />
+          <button type="submit" class="chat-send-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
 
     <script src="app.js"></script>
-</body>
+  </body>
 </html>

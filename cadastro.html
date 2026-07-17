@@ -3,59 +3,123 @@ ARQUIVO: cadastro.html
 DESCRIÇÃO: Página de cadastro de novos usuários para o sistema AssetPulse.
 Permite que novos usuários criem uma conta para acessar o sistema.
 ======================================================== -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AssetPulse - Cadastro</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div id="toast-container"></div>
 
     <div class="login-container">
-        <div class="login-box">
-            <svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 10px;">
-                <defs>
-                    <linearGradient id="logoGradCad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#662d91;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <circle cx="50" cy="50" r="48" fill="none" stroke="url(#logoGradCad)" stroke-width="4"/>
-                <path d="M50 15C36.2 15 25 26.2 25 40C25 55 50 85 50 85C50 85 75 55 75 40C75 26.2 63.8 15 50 15ZM42 55V35H48V55H42ZM52 55V28H58V55H52Z" fill="url(#logoGradCad)"/>
-            </svg>
-            
-            <h1>Criar Conta</h1>
-            <p>Junte-se ao AssetPulse</p>
+      <div class="login-box">
+        <svg
+          width="50"
+          height="50"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+          style="margin-bottom: 10px"
+        >
+          <defs>
+            <linearGradient
+              id="logoGradCad"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" style="stop-color: #9b59b6; stop-opacity: 1" />
+              <stop
+                offset="100%"
+                style="stop-color: #662d91; stop-opacity: 1"
+              />
+            </linearGradient>
+          </defs>
+          <circle
+            cx="50"
+            cy="50"
+            r="48"
+            fill="none"
+            stroke="url(#logoGradCad)"
+            stroke-width="4"
+          />
+          <path
+            d="M50 15C36.2 15 25 26.2 25 40C25 55 50 85 50 85C50 85 75 55 75 40C75 26.2 63.8 15 50 15ZM42 55V35H48V55H42ZM52 55V28H58V55H52Z"
+            fill="url(#logoGradCad)"
+          />
+        </svg>
 
-            <form id="form-cadastro">
-                <div class="campo">
-                    <label>Nome Completo</label>
-                    <input type="text" id="cad-nome" required placeholder="Digite seu nome">
-                </div>
-                <div class="campo">
-                    <label>Email</label>
-                    <input type="email" id="cad-email" required placeholder="Digite seu email">
-                </div>
-                <div class="campo">
-                    <label>Senha</label>
-                    <div class="senha-container">
-                        <input type="password" id="cad-senha" required placeholder="Digite sua senha">
-                        <button type="button" class="toggle-senha" onclick="mostrarOcultarSenha('cad-senha', this)" title="Mostrar/Ocultar Senha">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn-salvar-modal" style="margin-bottom: 25px; padding: 15px;">Cadastrar</button>
-            </form>
+        <h1>Criar Conta</h1>
+        <p>Junte-se ao AssetPulse</p>
 
-            <p style="margin-bottom: 0; font-size: 14px;">Já possui uma conta? <a href="login.html">Faça Login aqui</a></p>
-        </div>
+        <form id="form-cadastro">
+          <div class="campo">
+            <label>Nome Completo</label>
+            <input
+              type="text"
+              id="cad-nome"
+              required
+              placeholder="Digite seu nome"
+            />
+          </div>
+          <div class="campo">
+            <label>Email</label>
+            <input
+              type="email"
+              id="cad-email"
+              required
+              placeholder="Digite seu email"
+            />
+          </div>
+          <div class="campo">
+            <label>Senha</label>
+            <div class="senha-container">
+              <input
+                type="password"
+                id="cad-senha"
+                required
+                placeholder="Digite sua senha"
+              />
+              <button
+                type="button"
+                class="toggle-senha"
+                onclick="mostrarOcultarSenha('cad-senha', this)"
+                title="Mostrar/Ocultar Senha"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-salvar-modal"
+            style="margin-bottom: 25px; padding: 15px"
+          >
+            Cadastrar
+          </button>
+        </form>
+
+        <p style="margin-bottom: 0; font-size: 14px">
+          Já possui uma conta? <a href="login.html">Faça Login aqui</a>
+        </p>
+      </div>
     </div>
 
     <script src="auth.js"></script>
-</body>
+  </body>
 </html>
