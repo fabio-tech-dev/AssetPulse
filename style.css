@@ -233,6 +233,13 @@ a {
 /* ==========================================
    BARRAS DE PESQUISA E BOTÕES
    ========================================== */
+.header-secao-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 .container-acoes {
   display: flex;
   justify-content: space-between;
@@ -962,6 +969,28 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 @media (max-width: 768px) {
+  h2 {
+    font-size: 20px !important;
+  }
+
+  .header-secao-flex {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .header-secao-flex h2 {
+    margin-bottom: 5px !important;
+  }
+
+  .btn-voltar {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px !important;
+  }
+
   /* No telemóvel ativamos o scroll horizontal das tabelas */
   .table-responsive {
     overflow-x: auto;

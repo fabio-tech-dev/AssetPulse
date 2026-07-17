@@ -1127,6 +1127,8 @@ function verificarPatchUpdate() {
   const container = document.getElementById("balloon-patch-update");
   if (container && !localStorage.getItem("patchLido_1.0.0")) {
     container.style.display = "block";
+    // Salva no localStorage imediatamente para garantir que apareça apenas uma vez no primeiro carregamento
+    localStorage.setItem("patchLido_1.0.0", "true");
   }
 }
 
