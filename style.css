@@ -1051,9 +1051,18 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   pointer-events: auto; /* Permite cliques no botão */
 }
 
-.chat-toggle-btn span {
-  font-size: 28px;
-  transition: transform 0.3s;
+.chat-toggle-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #9b59b6;
+  transition: all 0.3s;
+}
+
+.chat-toggle-btn:hover .chat-toggle-img {
+  border-color: #d8b4fe;
+  box-shadow: 0 0 15px rgba(216, 180, 254, 0.6);
 }
 
 .chat-toggle-btn:hover {
@@ -1116,6 +1125,15 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   align-items: center;
   justify-content: center;
   font-size: 20px;
+}
+
+img.chat-bot-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #9b59b6;
+  background-color: #0b0914;
 }
 
 .chat-bot-meta h4 {
@@ -1320,3 +1338,158 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     height: 400px;
   }
 }
+
+/* ==========================================
+   BALÃO DE ATUALIZAÇÃO (PATCH UPDATE)
+   ========================================== */
+.patch-balloon-container {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  z-index: 1001;
+  max-width: 360px;
+  display: none;
+  animation: slideInLeft 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-120%) scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.patch-balloon-box {
+  background-color: rgba(21, 17, 37, 0.98);
+  border: 1px solid #4c1d95;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  position: relative;
+}
+
+/* Seta direcional do balão de fala */
+.patch-balloon-box::after {
+  content: '';
+  position: absolute;
+  bottom: 30px;
+  left: -10px;
+  border-width: 10px 10px 10px 0;
+  border-style: solid;
+  border-color: transparent rgba(21, 17, 37, 0.98) transparent transparent;
+  display: block;
+  width: 0;
+  z-index: 1;
+}
+
+.patch-balloon-box::before {
+  content: '';
+  position: absolute;
+  bottom: 29px;
+  left: -12px;
+  border-width: 11px 11px 11px 0;
+  border-style: solid;
+  border-color: transparent #4c1d95 transparent transparent;
+  display: block;
+  width: 0;
+  z-index: 0;
+}
+
+.patch-balloon-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #2b2245;
+  padding-bottom: 10px;
+}
+
+.patch-balloon-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #9b59b6;
+  background-color: #0b0914;
+  object-fit: cover;
+}
+
+.patch-balloon-title-area h4 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 15px;
+}
+
+.patch-balloon-badge {
+  font-size: 11px;
+  background-color: #662d91;
+  color: #d8b4fe;
+  padding: 2px 6px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.patch-balloon-close {
+  background: transparent;
+  border: none;
+  color: #a59caf;
+  font-size: 22px;
+  cursor: pointer;
+  margin-left: auto;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.patch-balloon-close:hover {
+  color: #ff4757;
+}
+
+.patch-balloon-body {
+  font-size: 13px;
+  color: #c4b5fd;
+  line-height: 1.5;
+}
+
+.patch-balloon-body p {
+  margin-bottom: 10px;
+}
+
+.patch-balloon-body ul li {
+  color: #e5e7eb;
+}
+
+.btn-patch-confirmar {
+  background: linear-gradient(135deg, #9b59b6 0%, #662d91 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(102, 45, 145, 0.3);
+}
+
+.btn-patch-confirmar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 45, 145, 0.5);
+}
+
+@media (max-width: 480px) {
+  .patch-balloon-container {
+    bottom: 85px;
+    left: 15px;
+    right: 15px;
+    max-width: calc(100vw - 30px);
+  }
+  .patch-balloon-box::after,
+  .patch-balloon-box::before {
+    display: none;
+  }
+}
+

@@ -10,6 +10,7 @@ para as telas de gerenciamento detalhado.
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AssetPulse - Gestor de Inventário</title>
+    <link rel="icon" type="image/svg+xml" href="logo.svg" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -803,9 +804,7 @@ para as telas de gerenciamento detalhado.
 
         <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 10px 0;">
           <p id="qr-ativo-nome" style="margin: 0; font-size: 18px; font-weight: bold; color: #662d91;"></p>
-          
           <img id="qr-imagem" src="" alt="QR Code" style="width: 200px; height: 200px; border: 4px solid #f4f4f9; border-radius: 8px;">
-          
           <button type="button" onclick="imprimirQR()" class="btn-salvar-modal" style="width: 100%; background: #662d91; color: white; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none; font-size: 16px; margin-top: 10px;">
             🖨️ Imprimir Etiqueta
           </button>
@@ -816,13 +815,13 @@ para as telas de gerenciamento detalhado.
     <!-- Assistente de IA Flutuante (Chatbot) -->
     <div class="chat-widget-container">
       <button class="chat-toggle-btn" id="chat-toggle-btn" onclick="toggleChat()" title="Falar com o Assistente">
-        <span>🤖</span>
+        <img src="pulsebot_avatar.png" alt="PulseBot" class="chat-toggle-img" />
       </button>
 
       <div class="chat-window" id="chat-window">
         <div class="chat-header">
           <div class="chat-header-info">
-            <div class="chat-bot-avatar">🤖</div>
+            <img src="pulsebot_avatar.png" alt="PulseBot" class="chat-bot-avatar" />
             <div class="chat-bot-meta">
               <h4>PulseBot</h4>
               <span class="chat-status">Online</span>
@@ -846,6 +845,32 @@ para as telas de gerenciamento detalhado.
             </svg>
           </button>
         </form>
+      </div>
+    </div>
+
+    <!-- Balão de Novidades (Patch Update) -->
+    <div id="balloon-patch-update" class="patch-balloon-container">
+      <div class="patch-balloon-box">
+        <div class="patch-balloon-header">
+          <img src="pulsebot_avatar.png" alt="PulseBot" class="patch-balloon-avatar" />
+          <div class="patch-balloon-title-area">
+            <h4>Novidades no AssetPulse!</h4>
+            <span class="patch-balloon-badge">Versão 1.0.0</span>
+          </div>
+          <button type="button" class="patch-balloon-close" onclick="fecharPatchUpdate()">&times;</button>
+        </div>
+        <div class="patch-balloon-body">
+          <p>Olá! Eu sou o <b>PulseBot</b>. Trouxe um super patch de atualizações para o sistema:</p>
+          <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+            <li style="margin-bottom: 8px;">🤖 <b>PulseBot Inteligente:</b> Meu assistente agora responde perguntas e analisa ativos em tempo real!</li>
+            <li style="margin-bottom: 8px;">☁️ <b>Banco na Nuvem (Aiven):</b> Conectividade segura via SSL ativada para proteger os dados.</li>
+            <li style="margin-bottom: 8px;">📱 <b>Etiqueta QR Code:</b> Agora é possível gerar e imprimir etiquetas para colar nas máquinas.</li>
+            <li style="margin-bottom: 0;">⚡ <b>Correções de Performance:</b> Ajustes na interface e correções de clique em telas menores.</li>
+          </ul>
+        </div>
+        <div class="patch-balloon-footer" style="margin-top: 15px;">
+          <button type="button" class="btn-patch-confirmar" onclick="confirmarLeituraPatch()">Explorar Sistema 🚀</button>
+        </div>
       </div>
     </div>
 

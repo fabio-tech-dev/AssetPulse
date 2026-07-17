@@ -1,9 +1,11 @@
 // ========================================================
 // ARQUIVO: auth.js
-// DESCRIÇÃO: Lógica JavaScript para autenticação de usuários no AssetPulse.
-// Este script gerencia o cadastro e o login de usuários, enviando requisições
-// para a API de backend e tratando as respostas para exibir alertas e redirecionar.
+// DESCRIÇÃO: Lógica JavaScript para autenticação no frontend.
+// Gerencia os formulários de login e cadastro de usuários,
+// além de lidar com a animação de textos e exibição de senhas.
 // ========================================================
+
+// Exibe notificações flutuantes (Toasts) na tela de autenticação
 function mostrarAlertaCustom(titulo, mensagem, tipo, icone) {
   const toastContainer = document.getElementById("toast-container");
   if (!toastContainer) return;
@@ -11,12 +13,12 @@ function mostrarAlertaCustom(titulo, mensagem, tipo, icone) {
   const toast = document.createElement("div");
   toast.className = `toast toast-${tipo}`;
   toast.innerHTML = `
-        <div class="toast-icon">${icone}</div>
-        <div class="toast-content">
-            <h4>${titulo}</h4>
-            <p>${mensagem}</p>
-        </div>
-    `;
+    <div class="toast-icon">${icone}</div>
+    <div class="toast-content">
+      <h4>${titulo}</h4>
+      <p>${mensagem}</p>
+    </div>
+  `;
   toastContainer.appendChild(toast);
 
   setTimeout(() => {
@@ -24,7 +26,7 @@ function mostrarAlertaCustom(titulo, mensagem, tipo, icone) {
   }, 3400);
 }
 
-// Monitora o formulário de cadastro se ele existir na página atual
+// Cadastro de usuário
 const formCadastro = document.getElementById("form-cadastro");
 if (formCadastro) {
   formCadastro.addEventListener("submit", async (e) => {
@@ -55,7 +57,7 @@ if (formCadastro) {
       } else {
         mostrarAlertaCustom(
           "Erro no Cadastro",
-          dados.erro || "Verifique os dados.",
+          dados.erro || "Verifique os dados informados.",
           "error",
           "❌",
         );
@@ -76,7 +78,7 @@ if (formCadastro) {
   });
 }
 
-// Monitora o formulário de login se ele existir na página atual
+// Login de usuário
 const formLogin = document.getElementById("form-login");
 if (formLogin) {
   formLogin.addEventListener("submit", async (e) => {
@@ -130,23 +132,23 @@ if (formLogin) {
   });
 }
 
-// Alterna a visibilidade da senha no input (botão do olhinho)
+// Mostrar/Ocultar campos de senha (olhinho)
 function mostrarOcultarSenha(inputId, btnElement) {
   const inputSenha = document.getElementById(inputId);
 
   const olhoAberto = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-        </svg>
-    `;
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+      <circle cx="12" cy="12" r="3"></circle>
+    </svg>
+  `;
 
   const olhoFechado = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-            <line x1="1" y1="1" x2="23" y2="23"></line>
-        </svg>
-    `;
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+      <line x1="1" y1="1" x2="23" y2="23"></line>
+    </svg>
+  `;
 
   if (inputSenha.type === "password") {
     inputSenha.type = "text";
@@ -157,7 +159,7 @@ function mostrarOcultarSenha(inputId, btnElement) {
   }
 }
 
-// Efeito de digitação e troca de palavras animadas (exibido no banner de login)
+// Carrossel de palavras dinâmicas na tela de login
 const elementoPalavra = document.getElementById("palavra-animada");
 if (elementoPalavra) {
   const palavras = [
@@ -173,7 +175,6 @@ if (elementoPalavra) {
     setTimeout(() => {
       indiceAtual = (indiceAtual + 1) % palavras.length;
       elementoPalavra.textContent = palavras[indiceAtual];
-
       elementoPalavra.classList.remove("fade-out");
     }, 600);
   }, 4000);

@@ -8,68 +8,66 @@
   ![Node.js](https://img.shields.io/badge/Node.js-662d91?style=for-the-badge&logo=node.js&logoColor=white)
   ![Express](https://img.shields.io/badge/Express.js-9b59b6?style=for-the-badge&logo=express&logoColor=white)
   ![MySQL](https://img.shields.io/badge/MySQL-662d91?style=for-the-badge&logo=mysql&logoColor=white)
-  ![JavaScript](https://img.shields.io/badge/JavaScript-9b59b6?style=for-the-badge&logo=javascript&logoColor=white)
+  ![Gemini AI](https://img.shields.io/badge/Gemini%20AI-9b59b6?style=for-the-badge&logo=google-gemini&logoColor=white)
 </div>
 
 <br>
 
 ## 📝 Sobre o Projeto
 
-O **AssetPulse** é uma solução robusta desenvolvida para resolver dores reais de gestão tecnológica. Ele funciona como uma plataforma centralizada para o controle total de hardwares, monitoramento rigoroso de licenças de software e acompanhamento automatizado de prazos de vencimento. 
+O **AssetPulse** é uma plataforma ITAM (*IT Asset Management*) em nuvem focada em eliminar a desorganização de planilhas locais para o controle de parque tecnológico e licenças corporativas. 
 
-A arquitetura foi projetada seguindo o modelo **Multi-Tenant**, o que significa que o sistema é capaz de servir múltiplos clientes ou empresas de forma completamente isolada, garantindo total privacidade, integridade e segurança para os dados de cada usuário.
+A arquitetura foi projetada sob o modelo **Multi-Tenant**, garantindo o isolamento estrito de dados e a integridade do inventário para múltiplos clientes na mesma base. Além disso, conta com um **Agente de IA (PulseBot)** integrado, capaz de interagir de forma inteligente com o banco de dados para entregar respostas e métricas do inventário em tempo real.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Front-end:** HTML5, CSS3, JavaScript (ES6+) com foco em usabilidade e interface responsiva.
-* **Back-end:** Node.js e Express, estruturando uma API ágil e organizada.
-* **Segurança:** Dotenv para criptografia e isolamento de variáveis de ambiente.
-* **Banco de Dados:** MySQL, utilizando modelagem relacional avançada e consultas otimizadas.
+*   **Front-end:** HTML5, CSS3, JavaScript (ES6+ Vanilla JS). Interface rápida, livre de frameworks pesados, focada em performance (UX) com modais flutuantes escuros e gradientes roxos.
+*   **Back-end:** Node.js com Express estruturado como uma API RESTful.
+*   **Inteligência Artificial:** SDK `@google/generative-ai` utilizando o modelo `gemini-3.5-flash` para automação de conversas e consultas assistidas (*Function Calling*).
+*   **Banco de Dados:** MySQL (modelagem relacional avançada com SSL seguro ativo para integração com provedores em nuvem como a Aiven).
 
 ---
 
 ## 📌 Principais Funcionalidades
 
-* 🖥️ **Gestão de Ativos (Computadores):** Controle completo (CRUD) de hardwares com monitoramento de status em tempo real (Ativo, Manutenção ou Descartado).
-* 🔑 **Controle de Licenças:** Cadastro de chaves de ativação com cálculo automático de dias restantes para o vencimento através da função `DATEDIFF` do SQL, permitindo ações rápidas de renovação ou cancelamento.
-* 🔐 **Autenticação Segura:** Sistema completo de cadastro e login de usuários com validação direta e segura no banco de dados.
-* 🛡️ **Proteção de Dados:** Código backend estruturado para nunca expor credenciais ou senhas de servidores, utilizando boas práticas de desenvolvimento seguro.
+*   🖥️ **Gestão de Ativos (Computadores):** CRUD completo de equipamentos físicos com classificação por departamento e status (Ativo, Manutenção, Descartado).
+*   🔑 **Controle de Licenças:** Cadastro de chaves e controle de validade com cálculo dinâmico de expiração.
+*   🤖 **PulseBot (Agente de IA):** Chatbot flutuante inteligente integrado que responde dúvidas do sistema e consulta ativamente dados estatísticos do banco.
+*   🖨️ **Etiquetas Inteligentes (QR Code):** Geração dinâmica de QR Code para etiquetamento térmico de equipamentos físicos.
+*   📊 **Relatórios em CSV:** Exportação instantânea das tabelas de inventário visíveis em formato compatível com Excel.
+*   🔄 **Auto-Criação de Tabelas (Migrations):** Inicialização automática e segura do schema do banco de dados na inicialização do servidor.
 
 ---
 
-## ⚙️ Como executar este projeto
-
-Para rodar e testar esta aplicação localmente no seu ambiente de desenvolvimento, siga o passo a passo abaixo:
+## ⚙️ Como executar o projeto localmente
 
 ### 1️⃣ Clone o repositório
-
-```git clone https://github.com/fabio-tech-dev/AssetPulse.git```
+```bash
+git clone https://github.com/fabio-tech-dev/AssetPulse.git
+```
 
 ### 2️⃣ Instale as dependências
-Abra o terminal do seu editor de código dentro da pasta raiz do projeto e execute:
-
-```npm install```
+```bash
+npm install
+```
 
 ### 3️⃣ Configure as variáveis de ambiente
-Crie um arquivo chamado .env (exatamente com o ponto no início) na raiz do projeto e adicione as suas credenciais locais do seu banco de dados MySQL:
+Crie um arquivo `.env` na raiz do projeto contendo os parâmetros de conexão:
+```env
+DB_HOST=seu_host_do_banco
+DB_PORT=porta_do_banco
+DB_USER=seu_usuario
+DB_PASS=sua_senha
+DB_NAME=gestordeinventario
+PORT=3000
+GEMINI_API_KEY=sua_chave_do_gemini
+```
 
-```DB_HOST=localhost```
-```DB_USER=seu_usuario_mysql```
-```DB_PASS=sua_senha_mysql```
-```DB_NAME=gestordeinventario```
-```PORT=3000```
-
-### 4️⃣ Configure o Banco de Dados
-Abra o seu gerenciador MySQL (como o MySQL Workbench).
-
-```Crie um novo banco de dados (Schema) com o nome de gestordeinventario.```
-```Importe e execute o arquivo database.sql (que está localizado na pasta do projeto) para criar toda a estrutura de tabelas automaticamente.```
-
-### 5️⃣ Inicie o servidor
-Com o banco configurado, volte ao terminal e ligue a aplicação rodando:
-
-```node server.js```
-
-Assim que o comando for executado, o terminal exibirá a mensagem de confirmação e o sistema estará pronto para receber conexões!
+### 4️⃣ Inicialize o banco de dados e o servidor
+O sistema está programado para verificar e criar automaticamente as tabelas necessárias (`users`, `softwares`, `computers`, `licenses`) na primeira inicialização. Basta rodar:
+```bash
+node server.js
+```
+Assim que a conexão for bem-sucedida, os logs de criação de tabelas serão exibidos e o sistema estará pronto em `http://localhost:3000`.

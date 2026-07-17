@@ -1,23 +1,28 @@
 // ========================================================
 // ARQUIVO: server.js
-// DESCRIÇÃO: Backend da aplicação AssetPulse.
-// Este arquivo Node.js com Express e MySQL gerencia as rotas da API para autenticação de usuários,
-// gestão de ativos (computadores) e gestão de licenças de software.
-// Ele atua como o ponto central de comunicação entre o frontend e o banco de dados.
+// DESCRIÇÃO: API Backend para o sistema AssetPulse.
+// Gerencia autenticação, controle de ativos (computadores),
+// licenciamento de softwares e o assistente PulseBot (IA).
 // ========================================================
+
 require("dotenv").config();
 
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
+
+// Inicialização da API do Gemini
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Configuração de acesso ao Banco de Dados (MySQL)
+// ==========================================
+// CONEXÃO COM O BANCO DE DADOS (MYSQL)
+// ==========================================
+
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
@@ -29,17 +34,17 @@ const db = mysql.createConnection({
   }
 });
 
-// Função auxiliar para executar queries em formato Promise
-function executarQuery(sql) {
+// Helper para executar queries MySQL usando Promises (async/await)
+function executarQuery(sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.query(sql, (err, results) => {
+    db.query(sql, params, (err, results) => {
       if (err) return reject(err);
       resolve(results);
     });
   });
 }
 
-// Rotina de inicialização automática de tabelas (Migrations)
+// Criação automática de tabelas (Migrations) no Startup
 async function inicializarBancoDeDados() {
   console.log("🔄 Inicializando tabelas do banco de dados...");
   
@@ -114,18 +119,21 @@ async function inicializarBancoDeDados() {
   }
 }
 
-// Tenta conectar ao banco e avisa no console do Node.js se deu certo ou errado
+// Conectar ao MySQL e rodar as Migrations
 db.connect((err) => {
   if (err) {
-    console.error("❌ Erro de BD:", err);
+    console.error("❌ Erro de conexão com o Banco de Dados:", err);
     return;
   }
   console.log("✅ Conectado ao banco com sucesso!");
   inicializarBancoDeDados();
 });
 
-// Rotas de Autenticação (Usuários)
-// Rota para cadastrar um novo usuário no banco de dados
+// ==========================================
+// ROTAS DE AUTENTICAÇÃO (USERS)
+// ==========================================
+
+// Rota de Cadastro de novo usuário
 app.post("/api/cadastro", (req, res) => {
   const { nome, email, senha } = req.body;
   db.query(
@@ -136,14 +144,14 @@ app.post("/api/cadastro", (req, res) => {
         if (err.code === "ER_DUP_ENTRY") {
           return res.status(409).json({ erro: "Email já cadastrado!" });
         }
-        return res.status(500).json({ erro: "Erro ao cadastrar" });
+        return res.status(500).json({ erro: "Erro ao cadastrar usuário." });
       }
       res.status(201).json({ mensagem: "Sucesso" });
-    },
+    }
   );
 });
 
-// Rota para validar o acesso de um usuário e devolver seus dados (Login)
+// Rota de Login de usuário
 app.post("/api/login", (req, res) => {
   const { email, senha } = req.body;
   db.query(
@@ -151,17 +159,20 @@ app.post("/api/login", (req, res) => {
     [email, senha],
     (err, results) => {
       if (err || results.length === 0) {
-        return res.status(401).json({ erro: "Inválido" });
+        return res.status(401).json({ erro: "E-mail ou senha inválidos." });
       }
       const user = results[0];
-      delete user.senha;
+      delete user.senha; // Não expõe o hash da senha
       res.status(200).json({ usuario: user });
-    },
+    }
   );
 });
 
-// Rotas de Computadores (Ativos)
-// Rota para listar todos os computadores cadastrados
+// ==========================================
+// ROTAS DE GESTÃO DE HARDWARES (ATIVOS)
+// ==========================================
+
+// Listar ativos (filtrado pelo usuário logado)
 app.get("/api/ativos", (req, res) => {
   const usuario_id = req.query.usuario_id;
   db.query(
@@ -170,17 +181,16 @@ app.get("/api/ativos", (req, res) => {
     (err, results) => {
       if (err) {
         console.error("❌ Erro no GET /api/ativos:", err);
-        return res.status(500).json({ erro: "Erro ao buscar dados no banco." });
+        return res.status(500).json({ erro: "Erro ao buscar ativos no banco." });
       }
       res.status(200).json(results);
-    },
+    }
   );
 });
 
-// Rota para cadastrar um novo computador no sistema
+// Cadastrar novo ativo físico
 app.post("/api/ativos", (req, res) => {
-  const { nome_computador, codigo_ativo, departamento, status, usuario_id } =
-    req.body;
+  const { nome_computador, codigo_ativo, departamento, status, usuario_id } = req.body;
   let statusDB =
     status === "manutencao"
       ? "manutencao"
@@ -195,22 +205,18 @@ app.post("/api/ativos", (req, res) => {
       if (err) {
         console.error("❌ Erro no POST /api/ativos:", err);
         if (err.code === "ER_DUP_ENTRY") {
-          return res
-            .status(409)
-            .json({
-              erro: "Este código de ativo já está em uso por outro PC.",
-            });
+          return res.status(409).json({
+            erro: "Este código de ativo já está em uso por outro PC."
+          });
         }
-        return res
-          .status(500)
-          .json({ erro: "Erro SQL ao tentar salvar no banco de dados." });
+        return res.status(500).json({ erro: "Erro SQL ao tentar salvar no banco." });
       }
       res.status(201).json({ mensagem: "Sucesso" });
-    },
+    }
   );
 });
 
-// Rota para editar os dados de um computador específico (usando o :id na URL)
+// Editar dados de um ativo físico específico
 app.put("/api/ativos/:id", (req, res) => {
   const { nome, codigo_ativo, departamento, status } = req.body;
   db.query(
@@ -218,50 +224,55 @@ app.put("/api/ativos/:id", (req, res) => {
     [nome, codigo_ativo, departamento, status, req.params.id],
     (err) => {
       if (err) {
-        return res.status(500).json({ erro: "Erro" });
+        return res.status(500).json({ erro: "Erro ao atualizar ativo." });
       }
       res.status(200).json({ mensagem: "Sucesso" });
-    },
+    }
   );
 });
 
-// Rota para apagar (deletar) permanentemente um computador
+// Deletar permanentemente um ativo físico
 app.delete("/api/ativos/:id", (req, res) => {
   db.query("DELETE FROM computers WHERE id = ?", [req.params.id], (err) => {
     if (err) {
-      return res.status(500).json({ erro: "Erro" });
+      return res.status(500).json({ erro: "Erro ao deletar ativo." });
     }
     res.status(200).json({ mensagem: "Sucesso" });
   });
 });
 
-// Rotas de Licenças e Softwares
-// Rota para buscar as licenças, fazendo JOIN com softwares e calculando os dias restantes (DATEDIFF)
+// ==========================================
+// ROTAS DE GESTÃO DE LICENÇAS
+// ==========================================
+
+// Buscar licenças fazendo JOIN com softwares e calculando vencimento
 app.get("/api/licencas", (req, res) => {
   const usuario_id = req.query.usuario_id;
   const sql = `
-        SELECT l.id, s.nome AS software, l.chave_licenca, l.data_compra, l.data_expiracao, l.status, l.data_cancelamento,
-        DATEDIFF(l.data_expiracao, CURDATE()) AS dias_restantes
-        FROM licenses l JOIN softwares s ON l.software_id = s.id WHERE l.usuario_id = ? ORDER BY dias_restantes ASC
-    `;
+    SELECT l.id, s.nome AS software, l.chave_licenca, l.data_compra, l.data_expiracao, l.status, l.data_cancelamento,
+    DATEDIFF(l.data_expiracao, CURDATE()) AS dias_restantes
+    FROM licenses l JOIN softwares s ON l.software_id = s.id 
+    WHERE l.usuario_id = ? 
+    ORDER BY dias_restantes ASC
+  `;
   db.query(sql, [usuario_id], (err, results) => {
     if (err) {
-      return res.status(500).json({ erro: "Erro ao buscar licenças" });
+      return res.status(500).json({ erro: "Erro ao buscar licenças." });
     }
     res.status(200).json(results);
   });
 });
 
-// Rota para registrar uma nova licença. Verifica primeiro se o software já existe; se não existir, cria-o antes.
+// Registrar nova licença (cria software catálogo se não existir)
 app.post("/api/licencas", (req, res) => {
-  const { software, fornecedor, chave, compra, vencimento, usuario_id } =
-    req.body;
+  const { software, fornecedor, chave, compra, vencimento, usuario_id } = req.body;
+  
   db.query(
     "SELECT id FROM softwares WHERE nome = ?",
     [software],
     (err, results) => {
       if (err) {
-        return res.status(500).json({ erro: "Erro no banco" });
+        return res.status(500).json({ erro: "Erro no banco de dados." });
       }
       if (results.length > 0) {
         inserirLicenca(results[0].id);
@@ -271,16 +282,15 @@ app.post("/api/licencas", (req, res) => {
           [software, fornecedor],
           (err, result) => {
             if (err) {
-              return res.status(500).json({ erro: "Erro ao criar software" });
+              return res.status(500).json({ erro: "Erro ao criar software catálogo." });
             }
             inserirLicenca(result.insertId);
-          },
+          }
         );
       }
-    },
+    }
   );
 
-  // Função auxiliar para inserir apenas a licença usando o ID do software (existente ou recém-criado)
   function inserirLicenca(software_id) {
     const sql =
       'INSERT INTO licenses (software_id, chave_licenca, data_compra, data_expiracao, status, usuario_id) VALUES (?, ?, ?, ?, "ativa", ?)';
@@ -289,15 +299,15 @@ app.post("/api/licencas", (req, res) => {
       [software_id, chave, compra, vencimento, usuario_id],
       (err) => {
         if (err) {
-          return res.status(500).json({ erro: "Erro ao salvar licença" });
+          return res.status(500).json({ erro: "Erro ao salvar licença." });
         }
         res.status(201).json({ mensagem: "Licença cadastrada!" });
-      },
+      }
     );
   }
 });
 
-// Rota para renovar uma licença (atualiza a data de expiração e o status para ativa)
+// Renovar validade de uma licença
 app.put("/api/licencas/:id/renovar", (req, res) => {
   const { nova_data } = req.body;
   if (!nova_data) {
@@ -308,14 +318,14 @@ app.put("/api/licencas/:id/renovar", (req, res) => {
     [nova_data, req.params.id],
     (err) => {
       if (err) {
-        return res.status(500).json({ erro: "Erro ao renovar" });
+        return res.status(500).json({ erro: "Erro ao renovar licença." });
       }
       res.status(200).json({ mensagem: "Renovada!" });
-    },
+    }
   );
 });
 
-// Rota para cancelar uma licença (muda o status para "cancelada" e anota a data)
+// Cancelar uma licença registrando a data do cancelamento
 app.put("/api/licencas/:id/cancelar", (req, res) => {
   const { data_cancelamento } = req.body;
   if (!data_cancelamento) {
@@ -326,84 +336,82 @@ app.put("/api/licencas/:id/cancelar", (req, res) => {
     [data_cancelamento, req.params.id],
     (err) => {
       if (err) {
-        return res.status(500).json({ erro: "Erro ao cancelar" });
+        return res.status(500).json({ erro: "Erro ao cancelar licença." });
       }
       res.status(200).json({ mensagem: "Cancelada!" });
-    },
+    }
   );
 });
 
 // ==========================================
-// MÓDULO DO AGENTE DE IA (ASSETPULSE COPILOT)
+// AGENTE DE IA / COPILOTO (PULSEBOT)
 // ==========================================
 
-// Função auxiliar que o Node.js vai usar para ir no MySQL quando a IA pedir
+// Consulta estatísticas de hardware filtradas por tenant
 function buscarResumoAtivosDoBanco(usuario_id) {
-    return new Promise((resolve, reject) => {
-        // Multi-tenant check: filter by usuario_id if available
-        const query = usuario_id 
-            ? 'SELECT status, COUNT(*) as total FROM computers WHERE usuario_id = ? GROUP BY status'
-            : 'SELECT status, COUNT(*) as total FROM computers GROUP BY status';
-        const params = usuario_id ? [usuario_id] : [];
-        
-        db.query(query, params, (err, results) => {
-            if (err) return reject(err);
-            resolve(results); // Retorna algo como [{status: 'ativo', total: 10}, ...]
-        });
+  return new Promise((resolve, reject) => {
+    const query = usuario_id 
+      ? "SELECT status, COUNT(*) as total FROM computers WHERE usuario_id = ? GROUP BY status"
+      : "SELECT status, COUNT(*) as total FROM computers GROUP BY status";
+    const params = usuario_id ? [usuario_id] : [];
+    
+    db.query(query, params, (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
     });
+  });
 }
 
-// Rota que recebe a mensagem do painel frontal
-app.post('/api/chat', async (req, res) => {
-    const mensagemUsuario = req.body.mensagem;
-    const usuario_id = req.body.usuario_id;
+// Endpoint de Chatbot para integração com o Gemini
+app.post("/api/chat", async (req, res) => {
+  const mensagemUsuario = req.body.mensagem;
+  const usuario_id = req.body.usuario_id;
 
-    // 1. Configurando a IA e ensinando a ela qual "ferramenta" ela tem
-    const model = genAI.getGenerativeModel({
-        model: "gemini-3.5-flash",
-        systemInstruction: "Você é o assistente virtual do sistema AssetPulse, focado em inventário de TI. Seja direto e profissional.",
-        tools: [{
-            functionDeclarations: [{
-                name: "consultar_banco_ativos",
-                description: "Use esta função SEMPRE que o usuário perguntar sobre a quantidade de computadores, PCs ativos, inativos ou em manutenção."
-            }]
-        }]
-    });
+  const model = genAI.getGenerativeModel({
+    model: "gemini-3.5-flash",
+    systemInstruction: "Você é o assistente virtual do sistema AssetPulse, focado em inventário de TI. Seja direto e profissional.",
+    tools: [
+      {
+        functionDeclarations: [
+          {
+            name: "consultar_banco_ativos",
+            description: "Use esta função SEMPRE que o usuário perguntar sobre a quantidade de computadores, PCs ativos, inativos ou em manutenção."
+          }
+        ]
+      }
+    ]
+  });
 
-    try {
-        // 2. Inicia o chat e envia a pergunta do usuário
-        const chat = model.startChat();
-        const result = await chat.sendMessage(mensagemUsuario);
-        
-        // 3. Verifica se a IA decidiu que precisa usar a ferramenta (ir no banco de dados)
-        const chamadasDeFuncao = result.response.functionCalls();
+  try {
+    const chat = model.startChat();
+    const result = await chat.sendMessage(mensagemUsuario);
+    
+    const chamadasDeFuncao = result.response.functionCalls();
 
-        if (chamadasDeFuncao && chamadasDeFuncao.length > 0 && chamadasDeFuncao[0].name === "consultar_banco_ativos") {
-            console.log("🤖 IA solicitou acesso ao Banco de Dados...");
-            
-            // O Node.js vai lá no MySQL buscar os dados reais
-            const dadosDoBanco = await buscarResumoAtivosDoBanco(usuario_id);
+    if (chamadasDeFuncao && chamadasDeFuncao.length > 0 && chamadasDeFuncao[0].name === "consultar_banco_ativos") {
+      console.log("🤖 IA solicitou acesso ao Banco de Dados...");
+      
+      const dadosDoBanco = await buscarResumoAtivosDoBanco(usuario_id);
 
-            // Devolvemos a resposta do MySQL para a IA processar
-            const respostaFinal = await chat.sendMessage([{
-                functionResponse: {
-                    name: "consultar_banco_ativos",
-                    response: { dados: dadosDoBanco }
-                }
-            }]);
-
-            // Devolve a resposta mastigada pela IA para o Frontend
-            return res.json({ resposta: respostaFinal.response.text() });
+      const respostaFinal = await chat.sendMessage([
+        {
+          functionResponse: {
+            name: "consultar_banco_ativos",
+            response: { dados: dadosDoBanco }
+          }
         }
+      ]);
 
-        // Se a pergunta foi só "Olá" ou algo que não precisou de banco, responde normalmente
-        return res.json({ resposta: result.response.text() });
-
-    } catch (error) {
-        console.error("Erro na IA:", error);
-        res.status(500).json({ resposta: "Ops, meus circuitos falharam ao tentar pensar." });
+      return res.json({ resposta: respostaFinal.response.text() });
     }
+
+    return res.json({ resposta: result.response.text() });
+  } catch (error) {
+    console.error("❌ Erro na IA:", error);
+    res.status(500).json({ resposta: "Ops, meus circuitos falharam ao tentar pensar." });
+  }
 });
 
+// Inicialização da escuta do Servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
