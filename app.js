@@ -207,7 +207,7 @@ function atualizarStatusGeral() {
 async function carregarAtivos() {
   try {
     const response = await fetch(
-      "http://localhost:3000/api/ativos?usuario_id=" + usuarioId,
+      "https://assetpulse-lh3s.onrender.com/api/ativos?usuario_id=" + usuarioId,
     );
     if (!response.ok) {
       const errObj = await response.json().catch(() => ({}));
@@ -329,7 +329,7 @@ async function carregarAtivos() {
 async function carregarLicencas() {
   try {
     const response = await fetch(
-      "http://localhost:3000/api/licencas?usuario_id=" + usuarioId,
+      "https://assetpulse-lh3s.onrender.com/api/licencas?usuario_id=" + usuarioId,
     );
     if (!response.ok) throw new Error("Erro na API de Licenças");
     const licencas = await response.json();
@@ -451,7 +451,7 @@ document
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/licencas", {
+      const response = await fetch("https://assetpulse-lh3s.onrender.com/api/licencas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dados),
@@ -501,7 +501,7 @@ document
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/licencas/${id}/renovar`,
+        `https://assetpulse-lh3s.onrender.com/api/licencas/${id}/renovar`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -555,7 +555,7 @@ document
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/licencas/${id}/cancelar`,
+        `https://assetpulse-lh3s.onrender.com/api/licencas/${id}/cancelar`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -669,7 +669,7 @@ document
         usuario_id: usuarioId,
       };
 
-      const response = await fetch("http://localhost:3000/api/ativos", {
+      const response = await fetch("https://assetpulse-lh3s.onrender.com/api/ativos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dados),
@@ -751,7 +751,7 @@ document
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/api/ativos/${id}`, {
+      const response = await fetch(`https://assetpulse-lh3s.onrender.com/api/ativos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dadosAtualizados),
@@ -786,7 +786,7 @@ document
     e.preventDefault();
     const id = document.getElementById("excluir-pc-id").value;
     try {
-      const res = await fetch(`http://localhost:3000/api/ativos/${id}`, {
+      const res = await fetch(`https://assetpulse-lh3s.onrender.com/api/ativos/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -1125,7 +1125,7 @@ async function enviarMensagemChat(event) {
   
   try {
     // 3. Enviar requisição POST para o backend
-    const response = await fetch("http://localhost:3000/api/chat", {
+    const response = await fetch("https://assetpulse-lh3s.onrender.com/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

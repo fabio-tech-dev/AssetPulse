@@ -35,7 +35,7 @@ if (formCadastro) {
     const senha = document.getElementById("cad-senha").value;
 
     try {
-      const response = await fetch("http://localhost:3000/api/cadastro", {
+      const response = await fetch("https://assetpulse-lh3s.onrender.com/api/cadastro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, email, senha }),
@@ -86,7 +86,7 @@ if (formLogin) {
     const senha = document.getElementById("login-senha").value;
 
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
+      const response = await fetch("https://assetpulse-lh3s.onrender.com/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
