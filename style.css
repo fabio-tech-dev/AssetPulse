@@ -1056,8 +1056,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
    ========================================== */
 .chat-widget-container {
   position: fixed;
-  bottom: 25px;
-  right: 25px;
+  bottom: 35px;
+  right: 35px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -1360,8 +1360,8 @@ img.chat-bot-avatar {
 /* Responsividade Mobile para Chat */
 @media (max-width: 480px) {
   .chat-widget-container {
-    bottom: 15px;
-    right: 15px;
+    bottom: 25px;
+    right: 25px;
   }
   .chat-window {
     width: calc(100vw - 30px);
@@ -1512,7 +1512,7 @@ img.chat-bot-avatar {
 
 @media (max-width: 480px) {
   .patch-balloon-container {
-    bottom: 85px;
+    bottom: 100px;
     left: 15px;
     right: 15px;
     max-width: calc(100vw - 30px);
