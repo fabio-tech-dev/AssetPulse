@@ -200,17 +200,19 @@ function fecharModalInfo() {
 function criarCardSobre() {
   const grid = document.querySelector(".servicos-grid");
   if (grid) {
-    const card = document.createElement("a");
-    card.href = "#";
+    const card = document.createElement("div");
     card.className = "servico-card destaque-sobre";
-    card.onclick = (e) => {
-      e.preventDefault();
+    card.style.cursor = "pointer";
+    card.onclick = () => {
       abrirModalInfo("sobre");
     };
     card.innerHTML = `
       <div class="servico-icone">🏢</div>
       <h3 style="font-size: 22px; color: #d8b4fe;">Sobre a AssetPulse</h3>
-      <p style="font-size: 16px; max-width: 800px; margin: 0 auto;">Descubra como revolucionamos a gestão de ativos de TI e licenças de software. Clique para conhecer nossa Missão, Visão e Valores.</p>
+      <p style="font-size: 16px; max-width: 800px; margin: 0 auto; margin-bottom: 15px;">Descubra como revolucionamos a gestão de ativos de TI e licenças de software. Clique para conhecer nossa Missão, Visão e Valores.</p>
+      <button class="btn-acao-secundario" style="margin-top: 15px; width: 100%; max-width: 300px;">
+        Acessar Detalhes
+      </button>
     `;
     grid.appendChild(card);
   }

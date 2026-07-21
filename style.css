@@ -752,6 +752,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   align-items: center;
   min-height: 100vh;
   background-color: #0b0914;
+  padding: 20px;
 }
 
 .login-box {

@@ -142,7 +142,7 @@ app.post("/api/cadastro", (req, res) => {
     (err) => {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
-          return res.status(409).json({ erro: "Email já cadastrado!" });
+          return res.status(409).json({ erro: "Este e-mail já existe!" });
         }
         return res.status(500).json({ erro: "Erro ao cadastrar usuário." });
       }
